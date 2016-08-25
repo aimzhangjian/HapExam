@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hapExam.aimcore.demo.mapper.SalerOrderMapper">
+	<select id="getSalerOrderList" resultType="hapExam.aimcore.demo.dto.SalerOrder"
+		parameterType="hapExam.aimcore.demo.dto.SalerOrder">
+
+		SELECT hooh.HEADER_ID,
+		hhoc.COMPANY_NAME,
+		hac.CUSTOMER_NAME,
+		hooh.ORDER_DATE,
+		hooh.ORDER_STATUS,
+		hool.ORDERD_QUANTITY*hool.UNIT_SELLING_PRICE AS order_amount
+		FROM
+		hap_om_order_headers hooh
+		,HAP_OM_ORDER_LINES hool
+		,HAP_ORG_COMPANYS
+		hhoc
+		,HAP_AR_CUSTOMERS hac
+		,HAP_INV_INVENTORY_ITEMS hiit
+		WHERE
+		hooh.HEADER_ID=hool.HEADER_ID
+		AND hooh.COMPANY_ID=hhoc.COMPANY_ID
+		AND
+		hooh.CUSTOMER_ID=hac.CUSTOMER_ID
+		AND
+		hiit.INVENTORY_ITEM_ID=hool.INVENTORY_ITEM_ID
+
+
+		<if test="header_id != null">
+			and hooh.header_id = #{header_id}
+		</if>
+		<if test="company_id != null">
+			AND hhoc.company_id = #{company_id}
+		</if>
+		<if test="customer_id != null">
+			AND hac.customer_id = #{customer_id}
+		</if>
+		<if test="inventory_item_id != null">
+			AND hiit.inventory_item_id = #{inventory_item_id}
+		</if>
+		<if test="order_status != null">
+			AND hooh.order_status like #{order_status}
+		</if>
+
+	</select>
+
+	<select id="getSalerOrderDetailList" resultType="hapExam.aimcore.demo.dto.SalerOrder"
+		parameterType="hapExam.aimcore.demo.dto.SalerOrder">
+
+		SELECT DISTINCT(hool.LINE_ID),
+		hhoc.COMPANY_ID,
+		hooh.HEADER_ID,
+		hiit.INVENTORY_ITEM_ID,
+		hiit.ITEM_CODE,
+		hiit.ITEM_DESCRIPTION,
+		hool.ORDER_QUANTITY_UOM,
+		hool.ORDERD_QUANTITY,
+		hool.UNIT_SELLING_PRICE,
+		hool.ORDERD_QUANTITY*hool.UNIT_SELLING_PRICE
+		AS order_amount,
+		hool.DESCRIPTION,
+		hool.ADDITION1,
+		hool.ADDITION2,
+		hool.ADDITION3,
+		hool.ADDITION4,
+		hool.ADDITION5
+		FROM
+		hap_om_order_headers
+		hooh
+		,HAP_OM_ORDER_LINES hool
+		,HAP_ORG_COMPANYS hhoc
+		,HAP_AR_CUSTOMERS
+		hac
+		,HAP_INV_INVENTORY_ITEMS hiit
+		WHERE
+		hiit.INVENTORY_ITEM_ID=hool.INVENTORY_ITEM_ID
+		and hooh.HEADER_ID=hool.HEADER_ID
+		and hhoc.COMPANY_ID=hool.COMPANY_ID
+		<if test="order_number != null">
+			and hooh.order_number = #{order_number}
+		</if>
+		<if test="company_name != null">
+			AND hhoc.company_name = #{company_name}
+		</if>
+		<if test="customer_name != null">
+			AND hac.customer_name = #{customer_name}
+		</if>
+		<if test="order_date != null">
+			AND hooh.order_date = #{order_date}
+		</if>
+
+		<if test="order_amount != null">
+			AND hool.ORDERD_QUANTITY*hool.UNIT_SELLING_PRICE =
+			#{order_amount}
+		</if>
+		<if test="order_status != null">
+			AND hooh.order_status like #{order_status}
+		</if>
+
+	</select>
+	
+	<select id="getNewId" resultType="Integer">
+		select max(LINE_ID) from
+		HAP_OM_ORDER_LINES
+	</select>
+	<select id="getNewheadersId" resultType="Integer">
+		select max(HEADER_ID) from
+		hap_om_order_headers
+	</select>
+
+	<update id="updateSalerOrderDetail" parameterType="hapExam.aimcore.demo.dto.SalerOrder">
+		update
+		HAP_OM_ORDER_LINES hool set
+		hool.INVENTORY_ITEM_ID=#{inventory_item_id},hool.ORDER_QUANTITY_UOM=#{order_quantity_uom}
+		,hool.ORDERD_QUANTITY=#{orderd_quantity},hool.UNIT_SELLING_PRICE=#{unit_selling_price}
+		,hool.DESCRIPTION=#{description},hool.ADDITION1=#{addition1},hool.ADDITION2=#{addition2},hool.ADDITION3=#{addition3}
+		,hool.ADDITION4=#{addition4},hool.ADDITION5=#{addition5}
+		where
+		hool.LINE_ID=#{line_id}
+	</update>
+
+
+	<insert id="saveSalerOrderDetail" parameterType="hapExam.aimcore.demo.dto.SalerOrder">
+	insert into
+	HAP_OM_ORDER_LINES(LINE_ID,
+	HEADER_ID,
+	COMPANY_ID,
+	LINE_NUMBER,
+	INVENTORY_ITEM_ID,
+	ORDER_QUANTITY_UOM,
+	ORDERD_QUANTITY,
+	UNIT_SELLING_PRICE,
+	DESCRIPTION,
+	ADDITION1,
+	ADDITION2,
+	ADDITION3,
+	ADDITION4,
+	ADDITION5)
+	values(#{line_id},
+	#{header_id},
+	#{company_id},
+	#{line_number},
+	#{inventory_item_id},
+	#{order_quantity_uom},
+	#{orderd_quantity},
+	#{unit_selling_price},
+	#{description},
+	#{addition1},#{addition2},#{addition3},#{addition4},#{addition5})
+	</insert>
+   
+   <insert id="saveSalerOrder" parameterType="hapExam.aimcore.demo.dto.SalerOrder">
+	insert into
+	hap_om_order_headers(HEADER_ID,
+	ORDER_NUMBER,
+	COMPANY_ID,
+	ORDER_DATE,
+	ORDER_STATUS,
+	CUSTOMER_ID
+	)
+	values(#{header_id},
+	#{order_number},
+	#{company_id},
+	#{order_date},
+	#{order_status},
+	#{customer_id})
+	</insert>
+   
+
+
+</mapper>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hapExam.aimcore.demo.mapper.HapInvInventoryItemsMapper">
+  <resultMap id="BaseResultMap" type="hapExam.aimcore.demo.dto.HapInvInventoryItems">
+    <id column="INVENTORY_ITEM_ID" jdbcType="BIGINT" property="inventory_item_id" />
+    <result column="ITEM_CODE" jdbcType="VARCHAR" property="itemCode" />
+    <result column="ITEM_UOM" jdbcType="VARCHAR" property="itemUom" />
+    <result column="ITEM_DESCRIPTION" jdbcType="VARCHAR" property="item_description" />
+    <result column="ORDER_FLAG" jdbcType="VARCHAR" property="orderFlag" />
+    <result column="START_ACTIVE_DATE" jdbcType="TIMESTAMP" property="startActiveDate" />
+    <result column="END_ACTIVE_DATE" jdbcType="TIMESTAMP" property="endActiveDate" />
+    <result column="ENABLED_FLAG" jdbcType="VARCHAR" property="enabledFlag" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="CREATED_BY" jdbcType="BIGINT" property="createdBy" />
+    <result column="LAST_UPDATED_BY" jdbcType="BIGINT" property="lastUpdatedBy" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="LAST_UPDATE_LOGIN" jdbcType="BIGINT" property="lastUpdateLogin" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    INVENTORY_ITEM_ID, ITEM_CODE, ITEM_UOM, ITEM_DESCRIPTION, ORDER_FLAG, START_ACTIVE_DATE, 
+    END_ACTIVE_DATE, ENABLED_FLAG, CREATION_DATE, CREATED_BY, LAST_UPDATED_BY, LAST_UPDATE_DATE, 
+    LAST_UPDATE_LOGIN
+  </sql>
+  <select id="selectHapInvInventoryItemsList" parameterType="hapExam.aimcore.demo.dto.HapInvInventoryItems" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hap_inv_inventory_items
+    <where>
+			<if test="inventory_item_id != null">
+				INVENTORY_ITEM_ID = #{inventory_item_id,jdbcType=BIGINT}
+			</if>
+	</where>
+  </select>
+  <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from hap_inv_inventory_items
+    where INVENTORY_ITEM_ID = #{inventoryItemId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="domain.hap_inv_inventory_items">
+    insert into hap_inv_inventory_items (INVENTORY_ITEM_ID, ITEM_CODE, ITEM_UOM, 
+      ITEM_DESCRIPTION, ORDER_FLAG, START_ACTIVE_DATE, 
+      END_ACTIVE_DATE, ENABLED_FLAG, CREATION_DATE, 
+      CREATED_BY, LAST_UPDATED_BY, LAST_UPDATE_DATE, 
+      LAST_UPDATE_LOGIN)
+    values (#{inventoryItemId,jdbcType=BIGINT}, #{itemCode,jdbcType=VARCHAR}, #{itemUom,jdbcType=VARCHAR}, 
+      #{itemDescription,jdbcType=VARCHAR}, #{orderFlag,jdbcType=VARCHAR}, #{startActiveDate,jdbcType=TIMESTAMP}, 
+      #{endActiveDate,jdbcType=TIMESTAMP}, #{enabledFlag,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=BIGINT}, #{lastUpdatedBy,jdbcType=BIGINT}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateLogin,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="domain.hap_inv_inventory_items">
+    insert into hap_inv_inventory_items
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="inventoryItemId != null">
+        INVENTORY_ITEM_ID,
+      </if>
+      <if test="itemCode != null">
+        ITEM_CODE,
+      </if>
+      <if test="itemUom != null">
+        ITEM_UOM,
+      </if>
+      <if test="itemDescription != null">
+        ITEM_DESCRIPTION,
+      </if>
+      <if test="orderFlag != null">
+        ORDER_FLAG,
+      </if>
+      <if test="startActiveDate != null">
+        START_ACTIVE_DATE,
+      </if>
+      <if test="endActiveDate != null">
+        END_ACTIVE_DATE,
+      </if>
+      <if test="enabledFlag != null">
+        ENABLED_FLAG,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="lastUpdatedBy != null">
+        LAST_UPDATED_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="lastUpdateLogin != null">
+        LAST_UPDATE_LOGIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="inventoryItemId != null">
+        #{inventoryItemId,jdbcType=BIGINT},
+      </if>
+      <if test="itemCode != null">
+        #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUom != null">
+        #{itemUom,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescription != null">
+        #{itemDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="orderFlag != null">
+        #{orderFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="startActiveDate != null">
+        #{startActiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endActiveDate != null">
+        #{endActiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabledFlag != null">
+        #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateLogin != null">
+        #{lastUpdateLogin,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="domain.hap_inv_inventory_items">
+    update hap_inv_inventory_items
+    <set>
+      <if test="itemCode != null">
+        ITEM_CODE = #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUom != null">
+        ITEM_UOM = #{itemUom,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescription != null">
+        ITEM_DESCRIPTION = #{itemDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="orderFlag != null">
+        ORDER_FLAG = #{orderFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="startActiveDate != null">
+        START_ACTIVE_DATE = #{startActiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endActiveDate != null">
+        END_ACTIVE_DATE = #{endActiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabledFlag != null">
+        ENABLED_FLAG = #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedBy != null">
+        LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateLogin != null">
+        LAST_UPDATE_LOGIN = #{lastUpdateLogin,jdbcType=BIGINT},
+      </if>
+    </set>
+    where INVENTORY_ITEM_ID = #{inventoryItemId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="domain.hap_inv_inventory_items">
+    update hap_inv_inventory_items
+    set ITEM_CODE = #{itemCode,jdbcType=VARCHAR},
+      ITEM_UOM = #{itemUom,jdbcType=VARCHAR},
+      ITEM_DESCRIPTION = #{itemDescription,jdbcType=VARCHAR},
+      ORDER_FLAG = #{orderFlag,jdbcType=VARCHAR},
+      START_ACTIVE_DATE = #{startActiveDate,jdbcType=TIMESTAMP},
+      END_ACTIVE_DATE = #{endActiveDate,jdbcType=TIMESTAMP},
+      ENABLED_FLAG = #{enabledFlag,jdbcType=VARCHAR},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      CREATED_BY = #{createdBy,jdbcType=BIGINT},
+      LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=BIGINT},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_LOGIN = #{lastUpdateLogin,jdbcType=BIGINT}
+    where INVENTORY_ITEM_ID = #{inventoryItemId,jdbcType=BIGINT}
+  </update> -->
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hapExam.aimcore.demo.mapper.HapOrgCompanysMapper">
+  <resultMap id="BaseResultMap" type="hapExam.aimcore.demo.dto.HapOrgCompanys">
+    <id column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
+    <result column="COMPANY_NUMBER" jdbcType="VARCHAR" property="companyNumber" />
+    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+    <result column="ENABLED_FLAG" jdbcType="VARCHAR" property="enabledFlag" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="CREATED_BY" jdbcType="BIGINT" property="createdBy" />
+    <result column="LAST_UPDATED_BY" jdbcType="BIGINT" property="lastUpdatedBy" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="LAST_UPDATE_LOGIN" jdbcType="BIGINT" property="lastUpdateLogin" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    COMPANY_ID, COMPANY_NUMBER, COMPANY_NAME, ENABLED_FLAG, CREATION_DATE, CREATED_BY, 
+    LAST_UPDATED_BY, LAST_UPDATE_DATE, LAST_UPDATE_LOGIN
+  </sql>
+  <select id="selectHapOrgCompanysList" parameterType="hapExam.aimcore.demo.dto.HapOrgCompanys" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hap_org_companys
+    <where>
+			<if test="companyId != null">
+				COMPANY_ID = #{companyId}
+			</if>
+	</where>
+  </select>
+  <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from hap_org_companys
+    where COMPANY_ID = #{companyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="domain.hap_org_companys">
+    insert into hap_org_companys (COMPANY_ID, COMPANY_NUMBER, COMPANY_NAME, 
+      ENABLED_FLAG, CREATION_DATE, CREATED_BY, 
+      LAST_UPDATED_BY, LAST_UPDATE_DATE, LAST_UPDATE_LOGIN
+      )
+    values (#{companyId,jdbcType=BIGINT}, #{companyNumber,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, 
+      #{enabledFlag,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=BIGINT}, 
+      #{lastUpdatedBy,jdbcType=BIGINT}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{lastUpdateLogin,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="domain.hap_org_companys">
+    insert into hap_org_companys
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="companyId != null">
+        COMPANY_ID,
+      </if>
+      <if test="companyNumber != null">
+        COMPANY_NUMBER,
+      </if>
+      <if test="companyName != null">
+        COMPANY_NAME,
+      </if>
+      <if test="enabledFlag != null">
+        ENABLED_FLAG,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="lastUpdatedBy != null">
+        LAST_UPDATED_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="lastUpdateLogin != null">
+        LAST_UPDATE_LOGIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="companyId != null">
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="companyNumber != null">
+        #{companyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="enabledFlag != null">
+        #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateLogin != null">
+        #{lastUpdateLogin,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="domain.hap_org_companys">
+    update hap_org_companys
+    <set>
+      <if test="companyNumber != null">
+        COMPANY_NUMBER = #{companyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="enabledFlag != null">
+        ENABLED_FLAG = #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedBy != null">
+        LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateLogin != null">
+        LAST_UPDATE_LOGIN = #{lastUpdateLogin,jdbcType=BIGINT},
+      </if>
+    </set>
+    where COMPANY_ID = #{companyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="domain.hap_org_companys">
+    update hap_org_companys
+    set COMPANY_NUMBER = #{companyNumber,jdbcType=VARCHAR},
+      COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+      ENABLED_FLAG = #{enabledFlag,jdbcType=VARCHAR},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      CREATED_BY = #{createdBy,jdbcType=BIGINT},
+      LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=BIGINT},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_LOGIN = #{lastUpdateLogin,jdbcType=BIGINT}
+    where COMPANY_ID = #{companyId,jdbcType=BIGINT}
+  </update> -->
+</mapper>

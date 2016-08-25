@@ -1,0 +1,641 @@
+<#-- * description: Fruit.html * version: 1.0 *
+author:taotao.xu@hand-china.com * #{copyright}# * --> <#include
+"../include/head.html">
+<body style="padding: 10px;">
+
+	<form id="SalerOrderForm"></form>
+   
+	<div id="salesorderDetailTabs" class="liger-tab">
+		<div tabid="SalerOrderGrid" style="margin: 0; padding: 0" title="主要"
+			lselected="true">
+			<div id="SalerOrderGrid"></div>
+		</div>
+		<div tabid="otherGrid" title="其他" lselected="true">
+			<div id="otherGrid"></div>
+		</div>
+		
+	</div>
+
+
+
+
+	<script
+		src="${base.contextPath}/common/code?typeStatue=HAP_OM_ORDER_STATUS"
+		type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function() {
+			debugger;
+			window['SalerOrderForm'] = $("#SalerOrderForm").ligerForm({
+				fields : [ {
+					type : 'text',
+					label : '订单编号',
+					newline : false,
+					name : 'order_number',
+					width : 120
+				},
+				/*form lov */
+				{
+					display : '公司名称',
+					name : 'company_id',
+					width : 150,
+					newline : false,
+					type : "popup",
+					textField : 'companyName',
+					options : {
+						readonly : false,
+						valueField : 'companyId',
+						textField : 'companyName',
+						grid : {
+							columns : [ {
+								display : 'companyNumber',
+								name : 'companyNumber',
+								width : 150,
+								type : "int"
+
+							}, {
+								display : 'companyName',
+								name : 'companyName',
+								width : 150,
+								type : "text"
+							} ],
+							url : '${base.contextPath}/hapOrgCompanys/query'
+						},
+
+						condition : {
+							inputWidth : 150,
+							labelWidth : 70,
+							fields : [ {
+								display : 'companyNumber',
+								name : "companyNumber",
+								newline : false,
+								type : "text"
+							}, {
+								display : 'companyName',
+								name : "companyName",
+								newline : false,
+								type : "text"
+							} ]
+						}
+					}
+				},
+				/*form lov */
+				{
+					display : '客户名称',
+					name : 'customer_id',
+					width : 150,
+					newline : false,
+					type : "popup",
+					textField : 'customerName',
+					options : {
+						readonly : false,
+						valueField : 'customerId',
+						textField : 'customerName',
+						grid : {
+							columns : [ {
+								display : 'customerNumber',
+								name : 'customerNumber',
+								width : 150,
+								type : "int"
+
+							}, {
+								display : 'customerName',
+								name : 'customerName',
+								width : 150,
+								type : "text"
+							} ],
+							url : '${base.contextPath}/HapArCustomers/query'
+						},
+
+						condition : {
+							inputWidth : 150,
+							labelWidth : 70,
+							fields : [ {
+								display : 'customerNumber',
+								name : "customerNumber",
+								newline : false,
+								type : "text"
+							}, {
+								display : 'customerName',
+								name : "customerName",
+								newline : false,
+								type : "text"
+							} ]
+						}
+					}
+				}, {
+					display : '订单日期',
+					name : 'order_date',
+					align : 'left',
+					width : 150,
+					type : 'date',
+					format : "yyyy-MM-dd",
+					editor : {
+						type : 'date'
+					}
+				},
+
+				{
+					display : '订单总金额',
+					name : 'order_amount',
+					align : 'left',
+					newline : false,
+					width : 150,
+					editor : {
+						type : 'text'
+					}
+
+				}, {
+					type : 'select',
+					label : '订单状态',
+					name : 'order_status',
+					newline : false,
+					width : 120,
+					options : {
+						readonly : false,
+						valueField : 'value',
+						textField : 'meaning',
+						data : typeStatue
+					}
+				} ],
+				buttons : [ {
+					text : '保存',
+					disabled : false,
+					newline : true,
+					width : 60,
+					click : function() {
+						Hap.gridQuery({
+							form : SalerOrderForm,
+							grid : otherGrid
+						})
+					}
+				}, {
+					text : '提交',
+					disabled : false,
+					newline : true,
+					width : 60,
+					click : function() {
+						Hap.gridQuery({
+							form : SalerOrderForm,
+							grid : SalerOrderGrid
+						})
+					}
+				}, {
+					text : '审批',
+					disabled : false,
+					newline : false,
+					width : 60,
+					click : function() {
+						openDomload()
+					}
+				}, {
+					text : '拒绝',
+					disabled : false,
+					newline : false,
+					width : 60,
+					click : function() {
+						openDomload()
+					}
+				}, {
+					text : '整单删除',
+					disabled : false,
+					newline : false,
+					width : 60,
+					click : function() {
+						openDomload()
+					}
+				}, {
+					text : '单据打印',
+					disabled : false,
+					newline : false,
+					width : 60,
+					click : function() {
+						openDomload()
+					}
+				}, {
+					text : '返回',
+					disabled : false,
+					newline : false,
+					width : 60,
+					click : function() {
+						openDomload()
+					}
+				} ],
+			});
+
+			var openDomload = function() {
+				$.ligerDialog.open({
+					//url:'${base.contextPath}/demo/attachFile.html',
+					height : 510,
+					width : 700,
+					isResize : true
+				});
+			}
+
+			var goSalerDetail = function() {
+				$.ligerDialog.open({
+					url : '${base.contextPath}/salerOrderDetail/query',
+					isResize : true
+				});
+			}
+
+			var openDomUpload = function() {
+				$.ligerDialog.open({
+					//url:'${base.contextPath}/demo/viewFile.html',
+					height : 510,
+					width : 700,
+					isResize : true
+				});
+			}
+
+			window['SalerOrderGrid'] = $("#SalerOrderGrid")
+					.ligerGrid(
+							{
+								unSetValidateAttr : false,
+								columns : [
+
+										{
+											display : '物料编号',
+											name : 'inventory_item_id',
+											width : 150,
+											newline : false,
+											type : "popup",
+											textField : 'item_code',
+											editor : {
+												type : "popup",
+												valueField : 'inventory_item_id',
+												textField : 'itemCode',
+												grid : {
+													columns : [
+															{
+																display : 'inventory_item_id',
+																name : 'inventory_item_id',
+																align : 'left',
+																width : 120
+															},
+															{
+																display : 'itemCode',
+																name : 'itemCode',
+																align : 'left',
+																width : 120,
+																editor : {
+																	type : 'text'
+																}
+															},
+															{
+																display : 'itemUom',
+																name : 'itemUom',
+																align : 'left',
+																width : 120,
+																editor : {
+																	type : 'text'
+																}
+															},
+															{
+																display : 'item_description',
+																name : 'item_description',
+																align : 'left',
+																width : 120,
+																editor : {
+																	type : 'text'
+																}
+
+															},
+															{
+																display : 'orderFlag',
+																name : 'orderFlag',
+																align : 'left',
+																width : 150,
+																editor : {
+																	type : 'text'
+																}
+															},
+															{
+																display : 'startActiveDate',
+																name : 'startActiveDate',
+																align : 'left',
+																width : 150,
+																editor : {
+																	type : 'text'
+																}
+
+															},
+															{
+																display : 'endActiveDate',
+																name : 'endActiveDate',
+																align : 'left',
+																width : 150,
+																editor : {
+																	type : 'text'
+																}
+
+															} ],
+													url : '${base.contextPath}/hapInvInventoryItems/query'
+												},
+
+											}
+										},
+										{
+											display : '公司名称',
+											name : 'company_id',
+											width : 150,
+											newline : false,
+											type : "popup",
+											textField : 'company_id',
+											editor : {
+												type : "popup",
+
+												valueField : 'companyId',
+												textField : 'companyName',
+												grid : {
+													columns : [
+															{
+																display : 'companyNumber',
+																name : 'companyNumber',
+																width : 150,
+																type : "int"
+
+															},
+															{
+																display : 'companyName',
+																name : 'companyName',
+																width : 150,
+																type : "text"
+															} ],
+													url : '${base.contextPath}/hapOrgCompanys/query'
+												},
+
+												condition : {
+													inputWidth : 150,
+													labelWidth : 70,
+													fields : [
+															{
+																display : 'companyNumber',
+																name : "companyNumber",
+																newline : false,
+																type : "text"
+															},
+															{
+																display : 'companyName',
+																name : "companyName",
+																newline : false,
+																type : "text"
+															} ]
+												}
+											}
+										},
+										{
+											display : '表头',
+											name : 'header_id',
+											width : 150,
+											newline : false,
+											type : "popup",
+											textField : 'header_id',
+											editor : {
+												type : "popup",
+
+												valueField : 'headerId',
+												textField : 'orderNumber',
+												grid : {
+													columns : [
+															{
+																display : 'headerId',
+																name : 'headerId',
+																width : 150,
+																type : "int"
+
+															},
+															{
+																display : 'orderNumber',
+																name : 'orderNumber',
+																width : 150,
+																type : "text"
+															} ],
+													url : '${base.contextPath}/hapOmOrderHeaders/query'
+												},
+
+												condition : {
+													inputWidth : 150,
+													labelWidth : 70,
+													fields : [
+															{
+																display : 'headerId',
+																name : "headerId",
+																newline : false,
+																type : "text"
+															},
+															{
+																display : 'orderNumber',
+																name : "orderNumber",
+																newline : false,
+																type : "text"
+															} ]
+												}
+											}
+										}, {
+											display : '物料描述',
+											name : 'item_description',
+											align : 'left',
+											width : 120,
+
+										}, {
+											display : '产品单位',
+											name : 'order_quantity_uom',
+											align : 'left',
+											width : 120,
+										}, {
+											display : '数量',
+											name : 'orderd_quantity',
+											align : 'left',
+											width : 120,
+											editor : {
+												type : 'text'
+											}
+										}, {
+											display : '销售单价',
+											name : 'unit_selling_price',
+											align : 'left',
+											width : 150,
+											editor : {
+												type : 'text'
+											}
+										}, {
+											display : '金额',
+											name : 'order_amount',
+											align : 'left',
+											width : 150,
+											editor : {
+												type : 'text'
+											}
+
+										}, {
+											display : '备注',
+											name : 'description',
+											align : 'left',
+											width : 150,
+											editor : {
+												type : 'text'
+											}
+
+										} ],
+								url : '${base.contextPath}/salerOrderDetail/query',
+								toolbar : {
+									items : [
+											{
+												text : '新建',
+
+												click : function() {
+													SalerOrderGrid.addRow({})
+												},
+												icon : 'add'
+											},
+											{
+												line : true
+											},
+											{
+												text : '删除',
+												click : function() {
+													Hap
+															.gridDelete({
+																grid : SalerOrderGrid,
+																url : '${base.contextPath}/salerOrderDetail/editerSalerOrder'
+															})
+													SalerOrderGrid
+															.deleteSelectedRow();
+												},
+												icon : 'delete'
+											},
+											{
+												line : true
+											},
+											{
+												text : '保存',
+												click : function() {
+													Hap
+															.gridSave({
+																grid : SalerOrderGrid,
+																url : '${base.contextPath}/salerOrderDetail/editerSalerOrder'
+															})
+												},
+												icon : 'save'
+											} ]
+								},
+
+								enabledEdit : true,
+								width : '99%',
+								height : '98%',
+								checkbox : true
+							});
+
+			window['otherGrid'] = $("#otherGrid")
+					.ligerGrid(
+							{
+								unSetValidateAttr : false,
+								columns : [
+
+								{
+									display : '附加信息1',
+									name : 'addition1',
+									align : 'left',
+									width : 120,
+									editor : {
+										type : 'text'
+									}
+								}, {
+									display : '附加信息2',
+									name : 'addition2',
+									align : 'left',
+									width : 120,
+									editor : {
+										type : 'text'
+									}
+
+								}, {
+									display : '附加信息3',
+									name : 'addition2',
+									align : 'left',
+									width : 120,
+									editor : {
+										type : 'text'
+									}
+
+								}, {
+									display : '附加信息4',
+									name : 'addition2',
+									align : 'left',
+									width : 120,
+									editor : {
+										type : 'text'
+									}
+
+								}, {
+									display : '附加信息5',
+									name : 'addition2',
+									align : 'left',
+									width : 120,
+									editor : {
+										type : 'text'
+									}
+
+								} ],
+								url : '${base.contextPath}/salerOrderDetail/query',
+								toolbar : {
+									items : [
+											{
+												text : '新建',
+
+												click : function() {
+													otherGrid.addRow({})
+												},
+												icon : 'add'
+											},
+											{
+												line : true
+											},
+											{
+												text : '删除',
+												click : function() {
+													Hap
+															.gridDelete({
+																grid : otherGrid,
+																url : '${base.contextPath}/salerOrderDetail/editerSalerOrder'
+															})
+													otherGrid
+															.deleteSelectedRow();
+												},
+												icon : 'delete'
+											},
+											{
+												line : true
+											},
+											{
+												text : '保存',
+												click : function() {
+													Hap.gridSave({
+																grid : otherGrid,
+																url : ''
+															})
+												},
+												icon : 'save'
+											} ]
+								},
+
+								enabledEdit : true,
+								width : '99%',
+								height : '98%',
+								checkbox : true
+							});
+			
+                             
+			var newSaleOrder = function() {
+				$.ligerDialog.open({
+					url : '${base.contextPath}/demo/demo.html',
+					height : 510,
+					width : 700,
+					isResize : true
+				});
+			}
+
+		});
+	</script>
+</body>
+</html>

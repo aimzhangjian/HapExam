@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hapExam.aimcore.demo.mapper.HapArCustomersMapper">
+  <resultMap id="BaseResultMap" type="hapExam.aimcore.demo.dto.HapArCustomers">
+    <id column="CUSTOMER_ID" jdbcType="BIGINT" property="customerId" />
+    <result column="CUSTOMER_NUMBER" jdbcType="VARCHAR" property="customerNumber" />
+    <result column="CUSTOMER_NAME" jdbcType="VARCHAR" property="customerName" />
+    <result column="COMPANY_ID" jdbcType="BIGINT" property="company_id" />
+    <result column="ENABLED_FLAG" jdbcType="VARCHAR" property="enabledFlag" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="CREATED_BY" jdbcType="BIGINT" property="createdBy" />
+    <result column="LAST_UPDATED_BY" jdbcType="BIGINT" property="lastUpdatedBy" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="LAST_UPDATE_LOGIN" jdbcType="BIGINT" property="lastUpdateLogin" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    CUSTOMER_ID, CUSTOMER_NUMBER, CUSTOMER_NAME, COMPANY_ID, ENABLED_FLAG, CREATION_DATE, 
+    CREATED_BY, LAST_UPDATED_BY, LAST_UPDATE_DATE, LAST_UPDATE_LOGIN
+  </sql>
+  <select id="selectHapArCustomersList" parameterType="hapExam.aimcore.demo.dto.HapArCustomers" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hap_ar_customers
+    
+    <where>
+			<if test="customerId != null">
+				and CUSTOMER_ID = #{customerId}
+			</if>
+			<if test="company_id != null">
+				and COMPANY_ID = #{company_id}
+			</if>
+	</where>
+    
+  </select>
+  <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from hap_ar_customers
+    where CUSTOMER_ID = #{customerId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="domain.hap_ar_customers">
+    insert into hap_ar_customers (CUSTOMER_ID, CUSTOMER_NUMBER, CUSTOMER_NAME, 
+      COMPANY_ID, ENABLED_FLAG, CREATION_DATE, 
+      CREATED_BY, LAST_UPDATED_BY, LAST_UPDATE_DATE, 
+      LAST_UPDATE_LOGIN)
+    values (#{customerId,jdbcType=BIGINT}, #{customerNumber,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, 
+      #{companyId,jdbcType=BIGINT}, #{enabledFlag,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=BIGINT}, #{lastUpdatedBy,jdbcType=BIGINT}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateLogin,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="domain.hap_ar_customers">
+    insert into hap_ar_customers
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        CUSTOMER_ID,
+      </if>
+      <if test="customerNumber != null">
+        CUSTOMER_NUMBER,
+      </if>
+      <if test="customerName != null">
+        CUSTOMER_NAME,
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID,
+      </if>
+      <if test="enabledFlag != null">
+        ENABLED_FLAG,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="lastUpdatedBy != null">
+        LAST_UPDATED_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="lastUpdateLogin != null">
+        LAST_UPDATE_LOGIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="customerNumber != null">
+        #{customerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="enabledFlag != null">
+        #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateLogin != null">
+        #{lastUpdateLogin,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="domain.hap_ar_customers">
+    update hap_ar_customers
+    <set>
+      <if test="customerNumber != null">
+        CUSTOMER_NUMBER = #{customerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="enabledFlag != null">
+        ENABLED_FLAG = #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedBy != null">
+        LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateLogin != null">
+        LAST_UPDATE_LOGIN = #{lastUpdateLogin,jdbcType=BIGINT},
+      </if>
+    </set>
+    where CUSTOMER_ID = #{customerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="domain.hap_ar_customers">
+    update hap_ar_customers
+    set CUSTOMER_NUMBER = #{customerNumber,jdbcType=VARCHAR},
+      CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR},
+      COMPANY_ID = #{companyId,jdbcType=BIGINT},
+      ENABLED_FLAG = #{enabledFlag,jdbcType=VARCHAR},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      CREATED_BY = #{createdBy,jdbcType=BIGINT},
+      LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=BIGINT},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_LOGIN = #{lastUpdateLogin,jdbcType=BIGINT}
+    where CUSTOMER_ID = #{customerId,jdbcType=BIGINT}
+  </update> -->
+</mapper>

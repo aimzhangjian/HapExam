@@ -1,0 +1,524 @@
+<!-- <#--
+ * description: DEMO
+ * version: 1.0
+ * #copyright#
+ *
+-->
+<#include "../include/head.html">
+<body style="padding: 10px;">
+<form id="demoForm"></form>
+<div id="demoGrid" style="margin: 0; padding: 0"></div>
+<script type="text/javascript">
+    $(function () {
+        window['demoForm'] = $("#demoForm").ligerForm({
+            fields : [{
+                type : 'text',
+                label: '<@spring.message "demo.name"/>',
+                name : 'name'
+            }],
+            buttons: [{
+                text    : '<@spring.message "hap.query"/>',
+                disabled: false,
+                width   : 60,
+                click   : function () {
+                    Hap.gridQuery({
+                        form: demoForm,
+                        grid: demoGrid
+                    })
+                }
+            }]
+        });
+
+        window['demoGrid'] = $("#demoGrid").ligerGrid({
+            unSetValidateAttr: false,
+            columns          : [{
+                display: '<@spring.message "demo.name"/>',
+                name   : 'name',
+                align  : 'left',
+                width  : 120,
+                editor : {
+                    type: 'text'
+                },
+	            validate:{
+		            required:true
+	            }
+            }],
+            url              : '${base.contextPath}/demo/query',
+            toolbar          : {
+                items: [{
+                    text   : '<@spring.message "hap.new"/>',
+                    disable: false,
+                    click  : function () {
+                        demoGrid.addRow({})
+                    },
+                    icon   : 'add'
+                }, {
+                    line: true
+                }, {
+                    text : '<@spring.message "hap.delete"/>',
+                    click: function () {
+                        Hap.gridDelete({
+                            grid: demoGrid,
+                            url : '${base.contextPath}/demo/delete'
+                        })
+
+                    },
+                    icon : 'delete'
+                }, {
+                    line: true
+                }, {
+                    text : '<@spring.message "hap.save"/>',
+                    click: function () {
+                        Hap.gridSave({
+                            grid: demoGrid,
+                            url : '${base.contextPath}/demo/submit'
+                        })
+                    },
+                    icon : 'save'
+                }]
+            },
+            enabledEdit      : true,
+            width            : '99%',
+            height           : '98%',
+            checkbox         : true
+        });
+    });
+</script>
+</body>
+</html>
+
+ 
+ 
+ 
+ <#-- * description: Fruit.html * version: 1.0 *
+author:taotao.xu@hand-china.com * #{copyright}# * --> <#include
+"../include/head.html">
+<body style="padding: 10px;">
+	<form id="customerForm"></form>
+	<div id="customerGrid" style="margin: 0; padding: 0"></div>
+	<script type="text/javascript">
+		$(function() {
+			debugger;
+			window['customerForm'] = $("#customerForm")
+					.ligerForm(
+							{
+								fields : [
+										{
+											type : 'text',
+											label : 'customer_id',
+											name : 'customer_id',
+											newline : false,
+											width : 120
+										},
+										{
+											type : 'text',
+											label : '<@spring.message "hbiaim2.demo.cutomer.first_name"/>',
+											newline:false,
+											name : 'first_name',
+											width : 120
+										} ,
+										/*form lov */
+										{
+											display : 'lov',
+											name:'address_id',
+											width : 150,
+											type:"popup",
+											textField:'address',
+											options:{
+												 readonly:false,
+												 valueField:'address_id',
+												 textField:'address',
+												 grid:{
+													 columns:[{
+														 display:'address_id',
+														 name:'address_id',
+														 width:150,
+														 type:"int"
+														
+													 },{
+														 display:'address',
+														 name:'address',
+														 width:150,
+														 type:"text"
+													 },{
+														 display:'address2',
+														 name:'address2',
+														 width:150,
+														 type:"text" 
+													 },{
+														 display:'district',
+														 name:'district',
+														 width:150,
+														 type:"text" 
+													 },{
+														 display:'phone',
+														 name:'phone',
+														 width:150,
+														 type:"text"
+													 } ,{
+														    display: "phone",
+														    name: "address_id",
+														    type: "select",
+														    textField:"phone",
+														    options: {
+														        readonly: false,
+														        valueField: 'address_id',
+														        textField: 'phone',
+														        url: '${base.contextPath}/customerHandler/getAddress',
+														        triggerToLoad: true,//注意
+														        onBeforeOpen: function() {
+														            //这里设置查询参数
+														            this.setParm('address_id', liger.get('address_id').getValue());
+														            this.triggerLoaded = false;//注意
+														        }
+														    }
+														 
+													 } ],
+													 url:'${base.contextPath}/customerHandler/getAddress'
+												 },
+												  /*  onLoadData: function() {
+										             //设置参数
+											            this.setParm('address', $.ligerui.get('address').getValue())
+											        }, */
+												 
+												  condition : {
+								                        inputWidth : 150,
+								                        labelWidth : 70,
+								                        fields : [ {
+								                            display : 'address',
+								                            name : "address",
+								                            newline : false,
+								                            type : "text"
+								                        }, {
+								                            display : 'address_id',
+								                            name : "address_id",
+								                            newline : false,
+								                            type : "text"
+								                        } ]
+												  }
+											}
+										}, {
+								            display: 'active',
+								            type   : 'checkbox',
+								            name   : 'active',
+								            newline:false,
+								            options: {
+								                checkValue  : 'Y',
+								                uncheckValue: 'N',
+									            onBeforeClick:function(item){
+								                	alert('before click')
+									            },
+									            onChange:function(item){
+									            	alert(item.getValue())
+									            }
+								            }
+										},
+							            {
+							                display: 'active',
+							                type   : 'checkboxlist',
+							                name   : 'active',
+							                options: {
+							                    url : '${base.contextPath}/customerHandler/getAddress',// 可以用写死的 data 替代动态加载的 url
+							                    textField: 'name',
+							                    onChangeValue:function(value){
+							                        alert(value)
+							                    }
+							                }
+										}],
+								buttons : [ {
+									text : '<@spring.message "hbiaim2.demo.customer.find"/>',
+									disabled : false,
+									newline:true,
+									width : 60,
+									click : function() {
+										Hap.gridQuery({
+											form : customerForm,
+											grid : customerGrid
+										})
+									}
+								} , {
+					                text : '下载文件',
+					                disabled : false,
+					                newline:false,
+					                width : 60,
+					                click : function() {
+					                	openDomUpload()
+					                }
+					            }, {
+					                text : '上传文件',
+					                disabled : false,
+					                newline:false,
+					                width : 60,
+					                click : function() {
+					                	openDomload()
+					                }
+					            }],
+							});
+			
+			 
+			var openDomload =function(){
+	        	$.ligerDialog.open({
+	        		url:'${base.contextPath}/demo/attachFile.html',
+	        		height:510,
+	        		width:700,
+	        		isResize:true
+	        	});
+	        }
+	        
+	        var openDomUpload =function(){
+	        	$.ligerDialog.open({
+	        		url:'${base.contextPath}/demo/viewFile.html',
+	        		height:510,
+	        		width:700,
+	        		isResize:true
+	        	});
+	        }
+
+			window['customerGrid'] = $("#customerGrid")
+					.ligerGrid(
+							{
+								unSetValidateAttr : false,
+								columns : [
+										{
+											display : 'customer_id',
+											name : 'customer_id',
+											align : 'left',
+											width : 120
+										},
+										{
+											display : 'store_id',
+											name : 'store_id',
+											align : 'left',
+											width : 120,
+											validate : {
+												required : true
+											}
+										},
+										/* grid lov */
+										{
+											display : 'lov',
+											name:'address_id',
+											width : 150,
+											textField:'address_id',
+											editor:{
+												 type:'popup',
+												 valueField:'address_id',
+												 textField:'address',
+												 grid:{
+													 columns:[{
+														 display:'address_id',
+														 name:'address_id',
+														 width:150,
+														 type:"int"
+													 },{
+														 display:'address',
+														 name:'address',
+														 width:150,
+														 type:"text"
+													 },{
+														 display:'address2',
+														 name:'address2',
+														 width:150,
+														 type:"text" 
+													 },{
+														 display:'district',
+														 name:'district',
+														 width:150,
+														 type:"text" 
+													 },{
+														 display:'phone',
+														 name:'phone',
+														 width:150,
+														 type:"text"
+													 },{
+														    display : 'lov1',  
+														    name : 'address',
+														    width : 150,
+														    textField:'address',
+														    align: 'left',
+														    editor: $.extend(${lovService.getLov(base.contextPath,base.locale, "/customerHandler/getAddress")},{
+														        staticOptions : function(e){
+														            //设置参数5445
+														            e.column.editor.parms = {
+														            		phone : e.record.phone
+														            }
+														        }
+														    })
+														}],
+													 url:'${base.contextPath}/customerHandler/getAddress'
+												 },
+												 
+												  condition : {
+								                        inputWidth : 150,
+								                        labelWidth : 70,
+								                        fields : [ {
+								                            display : 'address',
+								                            name : "address",
+								                            newline : false,
+								                            type : "text"
+								                        }, {
+								                            display : 'address_id',
+								                            name : "address_id",
+								                            newline : false,
+								                            type : "text"
+								                        } ]
+												  }
+											}
+										},
+										{
+											display : 'first_name',
+											name : 'first_name',
+											align : 'left',
+											width : 120,
+											editor : {
+												type : 'tl',
+												idField : 'customer_id',
+												dto : 'hbiAim2.aimcore.demo.dto.Customer'
+											},
+
+										},
+										{
+											display : 'last_name',
+											name : 'last_name',
+											align : 'left',
+											width : 120,
+											editor : {
+												type : 'text'
+											},
+											validate : {
+												required : true
+											}
+										},
+										{
+											display : 'email',
+											name : 'email',
+											align : 'left',
+											width : 150,
+											editor : {
+												type : 'text'
+											}
+										},
+										{
+											display : 'address_id',
+											name : 'address_id',
+											align : 'left',
+											width : 150,
+											editor : {
+												type : 'text'
+											}
+										},
+										{
+											display : 'select',
+											name : 'address_id',
+											width : 150,
+											align : 'left',
+											editor : {
+												type : 'select',
+												valueField : 'address_id',
+												textField : 'address',
+												url : '${base.contextPath}/customerHandler/getAddress'
+											}
+										}, {
+											display : 'active',
+											name : 'active',
+											align : 'left',
+											width : 150,
+											editor : {
+												type : 'text'
+											}
+										},{ display: 'last_update',
+							                 name   : 'last_update',
+							                 align  : 'center',
+							                 width  : 150,
+							                 type:'date',
+							              format : "yyyy-MM-dd",
+							                 editor : {
+							                     type: 'date'
+							                 } 
+										},{
+											display:"address",
+											name:"address_id",
+											type:"select",
+											width : 150,
+											textField:"address_id",
+											options:{
+												readonly:false,
+										        valueField:'address',
+										        textField:'address',
+										        url:'${base.contextPath}/customerHandler/getAddress',
+										        triggerToLoad:true,
+										        onBeforeOpen:function(){
+										        	this.setParm('address_id',liger.get('address_id').getValue());
+										        	this.triggerLoaded=false;
+										        }
+											}
+										},{
+											display: 'address',
+											width: 150,
+											name: 'address_id',
+											type: 'text',
+											textField: 'address',
+											editor: {
+											    type: 'select',
+											    textField: 'address',
+											    valueField: 'address_id',
+											    url: '${base.contextPath}/customerHandler/getAddress',
+											    //设置参数
+											    staticOptions: function(e) {
+											        e.column.editor.parms = {
+											            address_id:e.record.address_id
+											        }
+											    }
+											}
+				                           }],
+								url : '${base.contextPath}/customerHandler/getCustomers',
+								toolbar : {
+									items : [
+											{
+												text : '新建',
+												click : function() {
+													customerGrid.addRow({})
+												},
+												icon : 'add'
+											},
+											{
+												line : true
+											},
+											{
+												text : '删除',
+												click : function() {
+													Hap
+															.gridDelete({
+																grid : customerGrid,
+																url : '${base.contextPath}/customerHandler/addCustomer'
+															})
+													customerGrid
+															.deleteSelectedRow();
+												},
+												icon : 'delete'
+											},
+											{
+												line : true
+											},
+											{
+												text : '宝宝村',
+												click : function() {
+													Hap
+															.gridSave({
+																grid : customerGrid,
+																url : '${base.contextPath}/customerHandler/addCustomer'
+															})
+												},
+												icon : 'save'
+											} ]
+								},
+								enabledEdit : true,
+								width : '99%',
+								height : '98%',
+								checkbox : true
+							});
+		});
+	</script>
+</body>
+</html>
+ 
